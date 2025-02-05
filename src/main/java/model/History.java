@@ -1,13 +1,14 @@
 package model;
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class History {
+public class History implements Serializable {
     private int bookId;
     private int readerId;
     private LocalDate date;
     private boolean isReturned;
 
-    public History(int bookId, int readerId) {
+    public History(int readerId, int bookId) {
         this.bookId = bookId;
         this.readerId = readerId;
         this.date = LocalDate.now();
@@ -30,7 +31,5 @@ public class History {
         return isReturned;
     }
 
-    public void returnBook(){
-        isReturned = true;
-    }
+    public void returnBook(){isReturned = true;}
 }
