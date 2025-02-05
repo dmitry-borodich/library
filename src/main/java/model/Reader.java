@@ -1,6 +1,7 @@
 package model;
+import java.io.Serializable;
 
-public class Reader {
+public class Reader implements Serializable {
     private int id;
     private String name;
     private int age;
