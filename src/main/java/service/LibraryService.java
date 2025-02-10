@@ -80,7 +80,7 @@ public class LibraryService implements Operations, Serializable {
     public List<Book> getBooks() {
         System.out.println("Books: ");
         for (Book book : books) {
-            System.out.println("Id: " + book.getId() + ", title: " + book.getTitle() +", author: :" + book.getAuthor() + ", year: " + book.getYear());
+            System.out.println("Id: " + book.getId() + ", title: " + book.getTitle() +", author: " + book.getAuthor() + ", year: " + book.getYear());
         }
         return books;
     }
@@ -89,7 +89,7 @@ public class LibraryService implements Operations, Serializable {
     public List<Reader> getReaders() {
         System.out.println("Readers: ");
         for (Reader reader : readers) {
-            System.out.println("Id: " + reader.getId() + ", name: " + reader.getName() +", age:" + reader.getAge() + ", passport number: " + reader.getPassportNumber());
+            System.out.println("Id: " + reader.getId() + ", name: " + reader.getName() +", age: " + reader.getAge() + ", passport number: " + reader.getPassportNumber());
         }
         return readers;
     }

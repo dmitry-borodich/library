@@ -1,0 +1,32 @@
+package Parser;
+
+public class ArgumentParser {
+    public static ParsedArguments parse(String[] args) {
+        ParsedArguments parsedArguments = new ParsedArguments();
+        parsedArguments.setCommand(args[0]);
+
+        switch(parsedArguments.getCommand()) {
+            case READFILE:
+                parsedArguments.setType(args[1]);
+                parsedArguments.setFilePath(args[2]);
+                parsedArguments.setLibraryId(Integer.parseInt(args[3]));
+                break;
+            case LENDBOOK:
+            case RETURNBOOK:
+                parsedArguments.setReaderId(Integer.parseInt(args[1]));
+                parsedArguments.setBookId(Integer.parseInt(args[2]));
+                parsedArguments.setLibraryId(Integer.parseInt(args[3]));
+                break;
+            case PRINTOBJECT:
+                parsedArguments.setType(args[1]);
+                if (parsedArguments.getType().equals("borrowed")) {
+                    parsedArguments.setReaderId(Integer.parseInt(args[2]));
+                    parsedArguments.setLibraryId(Integer.parseInt(args[3]));
+                } else {
+                    parsedArguments.setLibraryId(Integer.parseInt(args[2]));
+                }
+                break;
+        }
+        return parsedArguments;
+    }
+}

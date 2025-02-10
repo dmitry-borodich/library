@@ -27,9 +27,11 @@ public class History implements Serializable {
         return date;
     }
 
-    public boolean isReturned(){
+    public boolean isReturned() {
         return isReturned;
     }
 
-    public void returnBook(){isReturned = true;}
+    public void returnBook() {
+        isReturned = true;
+    }
 }
