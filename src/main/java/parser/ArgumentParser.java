@@ -1,4 +1,4 @@
-package Parser;
+package parser;
 
 public class ArgumentParser {
     public static ParsedArguments parse(String[] args) {
@@ -6,6 +6,9 @@ public class ArgumentParser {
         parsedArguments.setCommand(args[0]);
 
         switch(parsedArguments.getCommand()) {
+            case LOADLIBRARIES:
+                parsedArguments.setFilePath(args[1]);
+                break;
             case READFILE:
                 parsedArguments.setType(args[1]);
                 parsedArguments.setFilePath(args[2]);
