@@ -2,13 +2,13 @@ package model;
 import java.time.LocalDate;
 import java.io.Serializable;
 
-public class History implements Serializable {
+public class HistoryNote implements Serializable {
     private int bookId;
     private int readerId;
     private LocalDate date;
     private boolean isReturned;
 
-    public History(int readerId, int bookId) {
+    public HistoryNote(int readerId, int bookId) {
         this.bookId = bookId;
         this.readerId = readerId;
         this.date = LocalDate.now();

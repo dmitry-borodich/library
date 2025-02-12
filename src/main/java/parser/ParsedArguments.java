@@ -1,4 +1,4 @@
-package Parser;
+package parser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,7 @@ public class ParsedArguments {
 
     public void setCommand(String command) {
         Map<String, Commands> commandsMap = new HashMap<>();
+        commandsMap.put("-loadlib", Commands.LOADLIBRARIES);
         commandsMap.put("-f", Commands.READFILE);
         commandsMap.put("-lend", Commands.LENDBOOK);
         commandsMap.put("-return", Commands.RETURNBOOK);
