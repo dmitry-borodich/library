@@ -1,17 +1,22 @@
 package main;
 
-import exceptions.LibraryNotFoundException;
-import parser.ParsedArguments;
-import service.Operations;
+import service.BookService;
+import service.ReaderService;
+import util.parsers.ParsedArguments;
+import service.LibraryService;
 
 public class Adapter {
-   private Operations libraryService;
+   private LibraryService libraryService;
+   private BookService bookService;
+   private ReaderService readerService;
 
-   public Adapter(Operations libraryService) {
+   public Adapter(LibraryService libraryService, BookService bookService, ReaderService readerService) {
        this.libraryService = libraryService;
+       this.bookService = bookService;
+       this.readerService = readerService;
    }
 
-   public void execute (ParsedArguments parsedArguments) throws LibraryNotFoundException {
+   public void execute (ParsedArguments parsedArguments)  {
        switch(parsedArguments.getCommand()){
            case LOADLIBRARIES:
                libraryService.loadLibraries(parsedArguments.getFilePath());
@@ -20,10 +25,10 @@ public class Adapter {
                handleReadFile(parsedArguments);
                break;
            case LENDBOOK:
-               libraryService.lendBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
+               bookService.lendBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
                break;
            case RETURNBOOK:
-               libraryService.returnBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
+               bookService.returnBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
                break;
            case PRINTOBJECT:
                handlePrintObject(parsedArguments);
@@ -31,14 +36,14 @@ public class Adapter {
        }
    }
 
-    private void handleReadFile(ParsedArguments parsedArguments) throws LibraryNotFoundException {
+    private void handleReadFile(ParsedArguments parsedArguments)  {
         switch (parsedArguments.getType()) {
             case "book":
-                libraryService.loadBooks(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
+                bookService.loadBooks(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
                 break;
             case "reader":
                 try {
-                    libraryService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
+                    readerService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
                 } catch (exceptions.LibraryNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -48,13 +53,13 @@ public class Adapter {
         }
     }
 
-    private void handlePrintObject(ParsedArguments parsedArguments) throws LibraryNotFoundException {
+    private void handlePrintObject(ParsedArguments parsedArguments)  {
        switch(parsedArguments.getType()){
            case "books":
-               libraryService.getBooks(parsedArguments.getLibraryId(), true);
+               bookService.getBooks(parsedArguments.getLibraryId(), true);
                break;
            case "reader":
-               libraryService.getReaders(parsedArguments.getLibraryId());
+               readerService.getReaders(parsedArguments.getLibraryId());
                break;
            case "borrowed":
                libraryService.getHistory(parsedArguments.getReaderId(), parsedArguments.getLibraryId(), true);

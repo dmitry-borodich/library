@@ -1,6 +1,6 @@
 package exceptions;
 
-public class LibraryNotFoundException extends Exception {
+public class LibraryNotFoundException extends RuntimeException {
     public LibraryNotFoundException(String message) {
         super(message);
     }

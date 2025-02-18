@@ -36,11 +36,8 @@ public class Book implements Serializable {
         return isInLibrary;
     }
 
-    public void setIsInLibraryTrue() {
-        isInLibrary = true;
-    }
-    public void setIsInLibraryFalse() {
-        isInLibrary = false;
+    public void setIsInLibrary(boolean isInLibrary) {
+        this.isInLibrary = isInLibrary;
     }
 
     @Override
@@ -50,6 +47,7 @@ public class Book implements Serializable {
         Book book = (Book) o;
         return this.id == book.id;
     }
+
     @Override
     public int hashCode() {
         return Integer.hashCode(id);

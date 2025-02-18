@@ -1,4 +1,4 @@
-package parser;
+package util.parsers;
 
 public class ArgumentParser {
     public static ParsedArguments parse(String[] args) {
