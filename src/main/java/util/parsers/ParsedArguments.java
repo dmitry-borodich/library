@@ -1,7 +1,6 @@
-package Parser;
+package util.parsers;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 public class ParsedArguments {
     private Commands command;
@@ -16,12 +15,10 @@ public class ParsedArguments {
     }
 
     public void setCommand(String command) {
-        Map<String, Commands> commandsMap = new HashMap<>();
-        commandsMap.put("-f", Commands.READFILE);
-        commandsMap.put("-lend", Commands.LENDBOOK);
-        commandsMap.put("-return", Commands.RETURNBOOK);
-        commandsMap.put("-list", Commands.PRINTOBJECT);
-        this.command = commandsMap.getOrDefault(command, this.command);
+        this.command = Stream.of(Commands.values()).filter(c -> c.alias.equals(command))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Комманда " + command + " не найдена"));
+
     }
 
     public String getType() {

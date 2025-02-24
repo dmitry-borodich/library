@@ -1,25 +1,34 @@
 package main;
 
-import Parser.ParsedArguments;
-import service.Operations;
+import service.BookService;
+import service.ReaderService;
+import util.parsers.ParsedArguments;
+import service.LibraryService;
 
 public class Adapter {
-   private Operations libraryService;
+   private LibraryService libraryService;
+   private BookService bookService;
+   private ReaderService readerService;
 
-   public Adapter(Operations libraryService) {
+   public Adapter(LibraryService libraryService, BookService bookService, ReaderService readerService) {
        this.libraryService = libraryService;
+       this.bookService = bookService;
+       this.readerService = readerService;
    }
 
-   public void execute (ParsedArguments parsedArguments) {
+   public void execute (ParsedArguments parsedArguments)  {
        switch(parsedArguments.getCommand()){
+           case LOADLIBRARIES:
+               libraryService.loadLibraries(parsedArguments.getFilePath());
+               break;
            case READFILE:
                handleReadFile(parsedArguments);
                break;
            case LENDBOOK:
-               libraryService.lendBook(parsedArguments.getReaderId(), parsedArguments.getBookId());
+               bookService.lendBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
                break;
            case RETURNBOOK:
-               libraryService.returnBook(parsedArguments.getReaderId(), parsedArguments.getBookId());
+               bookService.returnBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
                break;
            case PRINTOBJECT:
                handlePrintObject(parsedArguments);
@@ -27,29 +36,33 @@ public class Adapter {
        }
    }
 
-    private void handleReadFile(ParsedArguments parsedArguments) {
+    private void handleReadFile(ParsedArguments parsedArguments)  {
         switch (parsedArguments.getType()) {
             case "book":
-                libraryService.loadBooks(parsedArguments.getFilePath());
+                bookService.loadBooks(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
                 break;
             case "reader":
-                libraryService.loadReaders(parsedArguments.getFilePath());
+                try {
+                    readerService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
+                } catch (exceptions.LibraryNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Неизвестный тип для записи из файла: " + parsedArguments.getType());
         }
     }
 
-    private void handlePrintObject(ParsedArguments parsedArguments) {
+    private void handlePrintObject(ParsedArguments parsedArguments)  {
        switch(parsedArguments.getType()){
            case "books":
-               libraryService.getBooks();
+               bookService.getBooks(parsedArguments.getLibraryId(), true);
                break;
            case "reader":
-               libraryService.getReaders();
+               readerService.getReaders(parsedArguments.getLibraryId());
                break;
            case "borrowed":
-               libraryService.getHistory(parsedArguments.getReaderId());
+               libraryService.getHistory(parsedArguments.getReaderId(), parsedArguments.getLibraryId(), true);
                break;
            default:
                throw new IllegalArgumentException("Неизвестный тип для вывода: " + parsedArguments.getType());

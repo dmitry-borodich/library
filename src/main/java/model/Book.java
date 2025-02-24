@@ -6,14 +6,14 @@ public class Book implements Serializable {
     private String title;
     private String author;
     private int year;
-    //private boolean isReturned;
+    private boolean isInLibrary;
 
     public Book(int id, String title, String author, int year) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
-        //this.isReturned = true;
+        this.isInLibrary = true;
     }
 
     public int getId() {
@@ -32,7 +32,24 @@ public class Book implements Serializable {
         return year;
     }
 
-    //public boolean isReturned(){return isReturned;}
+    public boolean getIsInLibrary() {
+        return isInLibrary;
+    }
 
-    //public void returnBook() {isReturned = true;}
+    public void setIsInLibrary(boolean isInLibrary) {
+        this.isInLibrary = isInLibrary;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return this.id == book.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }
