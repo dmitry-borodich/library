@@ -10,7 +10,7 @@ public class ValuesFromCsvParser {
     }
 
     public static Book parseBook(String[] values) {
-        return new Book(Integer.parseInt(values[0]), values[1], values[2], Integer.parseInt(values[3]));
+        return new Book(Integer.parseInt(values[0]), values[1], values[2], Integer.parseInt(values[3]), true);
     }
 
     public static Reader parseReader(String[] values){

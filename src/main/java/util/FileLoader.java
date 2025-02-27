@@ -23,7 +23,7 @@ public class FileLoader<T> {
                             .collect(Collectors.toList()));
         }
         catch (Exception e) {
-            System.err.println("Файл + " + filePath + " не найден");
+            System.err.println("Файл " + filePath + " не найден");
         }
         return items;
     }
