@@ -9,5 +9,5 @@ import java.util.Set;
 public interface LibraryService {
     void loadLibraries(String filePath);
     List<HistoryNote> getHistory(int readerId, int libraryId, boolean displayHistory) ;
-    Library getLibrary(int id);
+    List<Library> getLibraries(boolean displayHistory) ;
 }

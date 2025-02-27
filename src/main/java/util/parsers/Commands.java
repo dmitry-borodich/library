@@ -5,7 +5,8 @@ public enum Commands {
     READFILE("-f"),
     LENDBOOK("-lend"),
     RETURNBOOK("-return"),
-    PRINTOBJECT("-list");
+    PRINTOBJECT("-list"),
+    CLEARDATABASE("-cleardb");
 
     public final String alias;
 

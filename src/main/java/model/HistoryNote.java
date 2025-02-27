@@ -1,18 +1,17 @@
 package model;
 import java.time.LocalDate;
-import java.io.Serializable;
 
-public class HistoryNote implements Serializable {
+public class HistoryNote  {
     private int bookId;
     private int readerId;
     private LocalDate date;
     private boolean isReturned;
 
-    public HistoryNote(int readerId, int bookId) {
+    public HistoryNote(int readerId, int bookId, LocalDate date, boolean isReturned) {
         this.bookId = bookId;
         this.readerId = readerId;
-        this.date = LocalDate.now();
-        this.isReturned = false;
+        this.date = date;
+        this.isReturned = isReturned;
     }
 
     public int getBookId() {
@@ -31,7 +30,4 @@ public class HistoryNote implements Serializable {
         return isReturned;
     }
 
-    public void returnBook() {
-        isReturned = true;
-    }
 }

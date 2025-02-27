@@ -1,5 +1,7 @@
 package util.parsers;
 
+import database.DatabaseSetup;
+
 public class ArgumentParser {
     public static ParsedArguments parse(String[] args) {
         ParsedArguments parsedArguments = new ParsedArguments();
@@ -25,9 +27,14 @@ public class ArgumentParser {
                 if (parsedArguments.getType().equals("borrowed")) {
                     parsedArguments.setReaderId(Integer.parseInt(args[2]));
                     parsedArguments.setLibraryId(Integer.parseInt(args[3]));
-                } else {
+                }
+                else if(parsedArguments.getType().equals("libraries")){}
+                else {
                     parsedArguments.setLibraryId(Integer.parseInt(args[2]));
                 }
+                break;
+            case CLEARDATABASE:
+                DatabaseSetup.clearDatabase();
                 break;
         }
         return parsedArguments;

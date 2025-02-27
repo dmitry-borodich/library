@@ -42,11 +42,7 @@ public class Adapter {
                 bookService.loadBooks(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
                 break;
             case "reader":
-                try {
-                    readerService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
-                } catch (exceptions.LibraryNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                readerService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
                 break;
             default:
                 throw new IllegalArgumentException("Неизвестный тип для записи из файла: " + parsedArguments.getType());
@@ -58,8 +54,11 @@ public class Adapter {
            case "books":
                bookService.getBooks(parsedArguments.getLibraryId(), true);
                break;
-           case "reader":
+           case "readers":
                readerService.getReaders(parsedArguments.getLibraryId());
+               break;
+           case "libraries":
+               libraryService.getLibraries(true);
                break;
            case "borrowed":
                libraryService.getHistory(parsedArguments.getReaderId(), parsedArguments.getLibraryId(), true);
