@@ -1,24 +1,27 @@
 package model;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class HistoryNote  {
-    private int bookId;
-    private int readerId;
+    private UUID id;
+    private UUID bookId;
+    private UUID readerId;
     private LocalDate date;
     private boolean isReturned;
 
-    public HistoryNote(int readerId, int bookId, LocalDate date, boolean isReturned) {
+    public HistoryNote(UUID id, UUID readerId, UUID bookId, LocalDate date, boolean isReturned) {
+        this.id = id;
         this.bookId = bookId;
         this.readerId = readerId;
         this.date = date;
         this.isReturned = isReturned;
     }
 
-    public int getBookId() {
+    public UUID getBookId() {
         return bookId;
     }
 
-    public int getReaderId() {
+    public UUID getReaderId() {
         return readerId;
     }
 

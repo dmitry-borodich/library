@@ -1,23 +1,23 @@
 package service;
-import database.DatabaseConnection;
-import model.Book;
+import exceptions.DatabaseServiceException;
+import mapper.HistoryNoteMapper;
+import mapper.LibraryMapper;
 import model.HistoryNote;
 import model.Library;
 import util.FileLoader;
 import util.parsers.ValuesFromCsvParser;
 
-import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class LibraryServiceImpl implements LibraryService, Serializable {
+public class LibraryServiceImpl implements LibraryService {
     private final Connection connection;
 
-    public LibraryServiceImpl() {
-        this.connection = DatabaseConnection.getConnection();
+    public LibraryServiceImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -31,29 +31,28 @@ public class LibraryServiceImpl implements LibraryService, Serializable {
                     stmt.setString(1, library.getAddress());
                     stmt.addBatch();
                 } catch (SQLException e) {
-                    throw new RuntimeException("Ошибка при добавлении библиотеки");
+                    throw new DatabaseServiceException("Ошибка при добавлении библиотeки", e);
                 }
             }
             stmt.executeBatch();
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Ошибка при работе с базой данных" + e.getMessage());
-            e.printStackTrace();
+            throw new DatabaseServiceException("Ошибка при загрузке библиотeк", e);
         }
     }
 
     @Override
-    public List<HistoryNote> getHistory(int readerId, int libraryId, boolean displayHistory)  {
+    public List<HistoryNote> getHistory(UUID readerId, UUID libraryId, boolean displayHistory)  {
         List<HistoryNote> history = new ArrayList<>();
         try(PreparedStatement stmt = connection.prepareStatement (
                 "SELECT * FROM history WHERE reader_id = ? AND library_id = ?")) {
-            stmt.setInt(1, readerId);
-            stmt.setInt(2, libraryId);
+            stmt.setObject(1, readerId);
+            stmt.setObject(2, libraryId);
 
             ResultSet rs = stmt.executeQuery();
+            HistoryNoteMapper historyNoteMapper = new HistoryNoteMapper();
             while (rs.next()) {
-                HistoryNote historyNote = new HistoryNote(rs.getInt("book_id"),rs.getInt("reader_id"), rs.getDate("date").toLocalDate(), rs.getBoolean("is_returned"));
+                HistoryNote historyNote = historyNoteMapper.map(rs);
                 history.add(historyNote);
             }
             if (displayHistory) {
@@ -63,8 +62,7 @@ public class LibraryServiceImpl implements LibraryService, Serializable {
                         .forEach(historyNote -> System.out.println("BookId: " + historyNote.getBookId() + ", date: " + historyNote.getDate() + (historyNote.isReturned() ? ", Returned" : "")));
             }
         } catch (SQLException e) {
-            System.err.println("Ошибка при работе с базой данных" + e.getMessage());
-            e.printStackTrace();
+            throw new DatabaseServiceException("Ошибка при загрузке истории", e);
         }
         return history;
     }
@@ -75,8 +73,9 @@ public class LibraryServiceImpl implements LibraryService, Serializable {
         try(PreparedStatement stmt = connection.prepareStatement (
                 "SELECT * FROM libraries")) {
             ResultSet rs = stmt.executeQuery();
+            LibraryMapper libraryMapper = new LibraryMapper();
             while (rs.next()) {
-                Library library = new Library(rs.getInt("id"),rs.getString("address"));
+                Library library = libraryMapper.map(rs);
                 libraries.add(library);
             }
             if (displayLibraries) {
@@ -84,8 +83,7 @@ public class LibraryServiceImpl implements LibraryService, Serializable {
                 libraries.forEach(library ->  System.out.println("Id: " + library.getId() + ", address: " + library.getAddress()));
             }
         } catch (SQLException e) {
-            System.err.println("Ошибка при работе с базой данных" + e.getMessage());
-            e.printStackTrace();
+            throw new DatabaseServiceException("Ошибка при получении списка библиотек", e);
         }
         return libraries;
     }

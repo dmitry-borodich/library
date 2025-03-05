@@ -1,19 +1,21 @@
 package model;
 
+import java.util.UUID;
+
 public class Reader  {
-    private int id;
+    private UUID id;
     private String name;
     private int age;
     private String passportNumber;
 
-    public Reader(int id, String name, int age, String passportNumber) {
+    public Reader(UUID id, String name, int age, String passportNumber) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.passportNumber = passportNumber;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

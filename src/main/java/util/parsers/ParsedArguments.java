@@ -1,14 +1,15 @@
 package util.parsers;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class ParsedArguments {
     private Commands command;
     private String type;
     private String filePath;
-    private int readerId;
-    private int bookId;
-    private int libraryId;
+    private UUID readerId;
+    private UUID bookId;
+    private UUID libraryId;
 
     public Commands getCommand() {
         return command;
@@ -37,27 +38,27 @@ public class ParsedArguments {
         this.filePath = filePath;
     }
 
-    public int getReaderId() {
+    public UUID getReaderId() {
         return readerId;
     }
 
-    public void setReaderId(int readerId) {
+    public void setReaderId(UUID readerId) {
         this.readerId = readerId;
     }
 
-    public int getBookId() {
+    public UUID getBookId() {
         return bookId;
     }
 
-    public void setBookId(int bookId) {
+    public void setBookId(UUID bookId) {
         this.bookId = bookId;
     }
 
-    public int getLibraryId() {
+    public UUID getLibraryId() {
         return libraryId;
     }
 
-    public void setLibraryId(int libraryId) {
+    public void setLibraryId(UUID libraryId) {
         this.libraryId = libraryId;
     }
 }

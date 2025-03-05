@@ -1,13 +1,15 @@
 package model;
 
+import java.util.UUID;
+
 public class Book  {
-    private int id;
+    private UUID id;
     private String title;
     private String author;
     private int year;
     private boolean isInLibrary;
 
-    public Book(int id, String title, String author, int year, boolean isInLibrary) {
+    public Book(UUID id, String title, String author, int year, boolean isInLibrary) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -15,7 +17,7 @@ public class Book  {
         this.isInLibrary = isInLibrary;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

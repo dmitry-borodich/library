@@ -1,18 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Library {
-    private int id;
+    private UUID id;
     private String address;
     private Set<Book> books;
     private List<Reader> readers;
     private List<HistoryNote> history;
 
-    public Library(int id, String address) {
+    public Library(UUID id, String address) {
         this.id = id;
         this.address = address;
         books = new HashSet<>();
@@ -20,7 +17,7 @@ public class Library {
         history = new ArrayList<>();
     }
 
-    public int getId() { return id; }
+    public UUID getId() { return id; }
 
     public String getAddress() { return address; }
 
