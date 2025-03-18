@@ -1,24 +1,29 @@
 package model;
 
 import java.util.*;
+        import jakarta.persistence.*;
+        import lombok.*;
 
+@Entity
+@Table(name = "libraries")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Library {
+
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
     private UUID id;
+
+    @Column(name = "address", nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Book> books;
-    private List<Reader> readers;
-    private List<HistoryNote> history;
 
-    public Library(UUID id, String address) {
-        this.id = id;
-        this.address = address;
-        books = new HashSet<>();
-        readers = new ArrayList<>();
-        history = new ArrayList<>();
-    }
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Reader> readers;
 
-    public UUID getId() { return id; }
-
-    public String getAddress() { return address; }
-
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<HistoryNote> history;
 }

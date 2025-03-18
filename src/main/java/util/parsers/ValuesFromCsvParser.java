@@ -8,14 +8,14 @@ import java.util.UUID;
 
 public class ValuesFromCsvParser {
     public static Library parseLibrary(String[] values) {
-        return new Library(UUID.randomUUID(), values[1]);
+        return new Library(UUID.randomUUID(), values[1], null, null, null);
     }
 
     public static Book parseBook(String[] values) {
-        return new Book(UUID.randomUUID(), values[1], values[2], Integer.parseInt(values[3]), true);
+        return new Book(UUID.randomUUID(), values[1], values[2], Integer.parseInt(values[3]), true, null);
     }
 
     public static Reader parseReader(String[] values){
-        return new Reader(UUID.randomUUID(), values[1], Integer.parseInt(values[2]), values[3]);
+        return new Reader(UUID.randomUUID(), values[1], Integer.parseInt(values[2]), values[3], null);
     }
 }

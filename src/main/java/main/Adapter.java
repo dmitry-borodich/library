@@ -1,70 +1,67 @@
 package main;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import service.BookService;
 import service.ReaderService;
-import util.parsers.ParsedArguments;
 import service.LibraryService;
 
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class Adapter {
-   private LibraryService libraryService;
-   private BookService bookService;
-   private ReaderService readerService;
 
-   public Adapter(LibraryService libraryService, BookService bookService, ReaderService readerService) {
-       this.libraryService = libraryService;
-       this.bookService = bookService;
-       this.readerService = readerService;
-   }
+   private final LibraryService libraryService;
+   private final BookService bookService;
+   private final ReaderService readerService;
 
-   public void execute (ParsedArguments parsedArguments)  {
-       switch(parsedArguments.getCommand()){
-           case LOADLIBRARIES:
-               libraryService.loadLibraries(parsedArguments.getFilePath());
-               break;
-           case READFILE:
-               handleReadFile(parsedArguments);
-               break;
-           case LENDBOOK:
-               bookService.lendBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
-               break;
-           case RETURNBOOK:
-               bookService.returnBook(parsedArguments.getReaderId(), parsedArguments.getBookId(), parsedArguments.getLibraryId());
-               break;
-           case PRINTOBJECT:
-               handlePrintObject(parsedArguments);
-               break;
-       }
-   }
 
-    private void handleReadFile(ParsedArguments parsedArguments)  {
-        switch (parsedArguments.getType()) {
-            case "book":
-                bookService.loadBooks(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
-                break;
-            case "reader":
-                readerService.loadReaders(parsedArguments.getFilePath(), parsedArguments.getLibraryId());
-                break;
-            default:
-                throw new IllegalArgumentException("Неизвестный тип для записи из файла: " + parsedArguments.getType());
-        }
-    }
-
-    private void handlePrintObject(ParsedArguments parsedArguments)  {
-       switch(parsedArguments.getType()){
-           case "books":
-               bookService.getBooks(parsedArguments.getLibraryId(), true);
+   @PostMapping("/f/{type}")
+   public ResponseEntity<?> readFile(@PathVariable String type, @RequestParam String filePath, @RequestParam(required = false) UUID libraryId) {
+       switch (type) {
+           case "library":
+               libraryService.loadLibraries(filePath);
                break;
-           case "readers":
-               readerService.getReaders(parsedArguments.getLibraryId());
+           case "book":
+               bookService.loadBooks(filePath, libraryId);
                break;
-           case "libraries":
-               libraryService.getLibraries(true);
-               break;
-           case "borrowed":
-               libraryService.getHistory(parsedArguments.getReaderId(), parsedArguments.getLibraryId(), true);
+           case "reader":
+               readerService.loadReaders(filePath, libraryId);
                break;
            default:
-               throw new IllegalArgumentException("Неизвестный тип для вывода: " + parsedArguments.getType());
+               throw new IllegalArgumentException("Неизвестный тип для записи из файла: " + type);
+       }
+       return ResponseEntity.ok("Объекты загружены из файла");
+   }
+
+   @PostMapping("/lend")
+   public ResponseEntity<?> lendBook(@RequestParam UUID readerId, @RequestParam UUID bookId, @RequestParam UUID libraryId) {
+       bookService.lendBook(readerId, bookId, libraryId);
+       return ResponseEntity.ok("Книга " + bookId + " выдана чиатателю " + readerId);
+   }
+
+    @PostMapping("/return")
+    public ResponseEntity<?> returnBook(@RequestParam UUID readerId, @RequestParam UUID bookId, @RequestParam UUID libraryId) {
+        bookService.returnBook(readerId, bookId, libraryId);
+        return ResponseEntity.ok("Книга " + bookId + " возвращена в библиотеку");
+    }
+
+    @PostMapping("/print/{type}")
+    public ResponseEntity<?> printObject(@PathVariable String type, @RequestParam(required = false) UUID libraryId, @RequestParam(required = false) UUID readerId) {
+        switch (type) {
+            case "books":
+                return ResponseEntity.ok(bookService.getBooks(libraryId, true));
+            case "readers":
+                return ResponseEntity.ok(readerService.getReaders(libraryId));
+            case "libraries":
+                return ResponseEntity.ok(libraryService.getLibraries(true));
+            case "borrowed":
+                return ResponseEntity.ok(libraryService.getHistory(readerId, libraryId, true));
+            default:
+                throw new IllegalArgumentException("Неизвестный тип для вывода: " + type);
         }
     }
 }

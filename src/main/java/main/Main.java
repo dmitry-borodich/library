@@ -1,19 +1,19 @@
 package main;
 
-import database.DatabaseConnection;
-import database.DatabaseSetup;
-import service.BookServiceImpl;
-import service.ReaderServiceImpl;
-import util.parsers.ArgumentParser;
-import service.LibraryServiceImpl;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.sql.Connection;
+@SpringBootApplication
+@ComponentScan(basePackages = {"main", "service"})
+@EnableJpaRepositories("repository")
+@EntityScan("model")
+public class Main  {
 
-public class Main {
     public static void main(String[] args)  {
-        Connection connection = DatabaseConnection.getConnection();
-        DatabaseSetup.createTables(connection);
-        Adapter adapter = new Adapter(new LibraryServiceImpl(connection), new BookServiceImpl(connection), new ReaderServiceImpl(connection));
-        adapter.execute(ArgumentParser.parse(args));
+        SpringApplication.run(Main.class, args);
     }
+
 }
