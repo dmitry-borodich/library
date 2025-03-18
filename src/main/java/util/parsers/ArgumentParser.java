@@ -1,5 +1,9 @@
 package util.parsers;
 
+import database.DatabaseSetup;
+
+import java.util.UUID;
+
 public class ArgumentParser {
     public static ParsedArguments parse(String[] args) {
         ParsedArguments parsedArguments = new ParsedArguments();
@@ -12,22 +16,27 @@ public class ArgumentParser {
             case READFILE:
                 parsedArguments.setType(args[1]);
                 parsedArguments.setFilePath(args[2]);
-                parsedArguments.setLibraryId(Integer.parseInt(args[3]));
+                parsedArguments.setLibraryId(UUID.fromString(args[3]));
                 break;
             case LENDBOOK:
             case RETURNBOOK:
-                parsedArguments.setReaderId(Integer.parseInt(args[1]));
-                parsedArguments.setBookId(Integer.parseInt(args[2]));
-                parsedArguments.setLibraryId(Integer.parseInt(args[3]));
+                parsedArguments.setReaderId(UUID.fromString(args[1]));
+                parsedArguments.setBookId(UUID.fromString(args[2]));
+                parsedArguments.setLibraryId(UUID.fromString(args[3]));
                 break;
             case PRINTOBJECT:
                 parsedArguments.setType(args[1]);
                 if (parsedArguments.getType().equals("borrowed")) {
-                    parsedArguments.setReaderId(Integer.parseInt(args[2]));
-                    parsedArguments.setLibraryId(Integer.parseInt(args[3]));
-                } else {
-                    parsedArguments.setLibraryId(Integer.parseInt(args[2]));
+                    parsedArguments.setReaderId(UUID.fromString(args[2]));
+                    parsedArguments.setLibraryId(UUID.fromString(args[3]));
                 }
+                else if(parsedArguments.getType().equals("libraries")){}
+                else {
+                    parsedArguments.setLibraryId(UUID.fromString(args[2]));
+                }
+                break;
+            case CLEARDATABASE:
+                DatabaseSetup.clearDatabase();
                 break;
         }
         return parsedArguments;

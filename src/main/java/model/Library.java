@@ -1,19 +1,15 @@
 package model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class Library implements Serializable {
-    private int id;
+public class Library {
+    private UUID id;
     private String address;
     private Set<Book> books;
     private List<Reader> readers;
     private List<HistoryNote> history;
 
-    public Library(int id, String address) {
+    public Library(UUID id, String address) {
         this.id = id;
         this.address = address;
         books = new HashSet<>();
@@ -21,43 +17,8 @@ public class Library implements Serializable {
         history = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
-    }
+    public UUID getId() { return id; }
 
-    public void setBooks(List<Book> books) {
-        this.books.addAll(books);
-    }
+    public String getAddress() { return address; }
 
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setReaders(List<Reader> readers) {
-        this.readers.addAll(readers);
-    }
-
-    public List<Reader> getReaders() {
-        return readers;
-    }
-
-    public void addHistoryNote(HistoryNote historyNote) {
-        history.add(historyNote);
-    }
-
-    public List<HistoryNote> getHistory() {
-        return history;
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if(!(obj instanceof Library)) return false;
-        Library library = (Library) obj;
-        return id == library.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Integer.hashCode(id);
-    }
 }

@@ -6,6 +6,8 @@ target/
 
 dependency-reduced-pom.xml
 
+.env
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

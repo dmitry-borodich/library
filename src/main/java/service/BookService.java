@@ -2,11 +2,12 @@ package service;
 
 import model.Book;
 
-import java.util.Set;
+import java.util.List;
+import java.util.UUID;
 
 public interface BookService {
-    void loadBooks(String filePath, int libraryId) ;
-    void lendBook(int readerId, int bookId, int libraryId) ;
-    void returnBook(int readerId, int bookId, int libraryId) ;
-    Set<Book> getBooks(int libraryId, boolean displayBooks) ;
+    void loadBooks(String filePath, UUID libraryId) ;
+    void lendBook(UUID readerId, UUID bookId, UUID libraryId) ;
+    void returnBook(UUID readerId, UUID bookId, UUID libraryId) ;
+    List<Book> getBooks(UUID libraryId, boolean displayBooks) ;
 }
