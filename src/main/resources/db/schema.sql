@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS books (
     author VARCHAR(50),
     year INT,
     is_in_library BOOLEAN,
-    library_id UUID,
+    library_id UUID NOT NULL,
     FOREIGN KEY (library_id) REFERENCES libraries (id)
 );
 
@@ -20,17 +20,17 @@ CREATE TABLE IF NOT EXISTS readers (
     name VARCHAR(50),
     age INT,
     passport_number VARCHAR(50),
-    library_id UUID,
+    library_id UUID NOT NULL,
     FOREIGN KEY (library_id) REFERENCES libraries (id)
 );
 
 CREATE TABLE IF NOT EXISTS history (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    book_id UUID,
-    reader_id UUID,
+    book_id UUID NOT NULL,
+    reader_id UUID NOT NULL,
     date DATE,
     is_returned BOOLEAN,
-    library_id UUID,
+    library_id UUID NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
     FOREIGN KEY (reader_id) REFERENCES readers (id) ON DELETE CASCADE,
     FOREIGN KEY (library_id) REFERENCES libraries (id) ON DELETE CASCADE
